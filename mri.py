@@ -3,8 +3,8 @@ from matplotlib import pyplot as plt
 
 #CONSTANTES GLOBALES
 mu = 4*np.pi*10**(-7) 
-tol = 1e-10 #tolerancia
-delta = 1e-2
+tol = 1e-6 #tolerancia
+delta = 1e-2                #Paso del metodo de la secante
 
 def solver(L,l,n):
     # DEFINICIÓN DE FUNCIONES LAMBDA (f(x) Y f'(x))
@@ -14,35 +14,37 @@ def solver(L,l,n):
     dfunc = lambda r: (np.pi*mu*n**2*r*(((r**2+l**2)**0.5)-r)*(2*((r**2+l**2)**0.5)-r))/(l**2*((r**2+l**2)**0.5))
     
     # Se busca realizar la iteración: x_(k+1) = x_k - f(x_k)/df(x_k)
-    rk = 16*(10*3) * L/(n**2) # Definimos r inicial (r_0)
+    rk = 16*(10**3) * L/(n**2) # Definimos r inicial (r_0)
 
     #Primera iteración
-    if abs(dfunc(rk)) < tol: # Si la derivada es "0", usamos el metodo de la secante
+    if abs(dfunc(rk)) == 0: # Si la derivada es "0", usamos el metodo de la secante
         div = (func(rk+delta)-func(rk))/delta
         j=2
-        while abs(div) < tol: #En caso de que div siga siendo "0" agrandamos el intervalo
-             div = (func(rk+(j*delta))-func(rk))/(j*delta)
-             j+=1
+        while abs(div) == 0: #En caso de que div siga siendo "0" agrandamos el intervalo
+            div = (func(rk+(j*delta))-func(rk))/(j*delta)
+            j+=1
     else:
         div = dfunc(rk)
     rkm1 = rk - (func(rk)/div)
     
     #Iteración 2 en adelante
+
     while(abs(rkm1 - rk) > tol):
-        if abs(dfunc(rk)) < tol: # Si la derivada es "0", usamos el metodo de la secante
-        div = (func(rk+delta)-func(rk))/delta
-        j=2
-        while abs(div) < tol: #En caso de que div siga siendo 0 agrandamos el intervalo
-             div = (func(rk+(j*delta))-func(rk))/(j*delta)
-             j+=1
-    else:
-        div = dfunc(rk)
-    rkm1 = rk - (func(rk)/div)
+        rk = rkm1
+        if abs(dfunc(rk)) == 0: # Si la derivada es "0", usamos el metodo de la secante
+            div = (func(rk+delta)-func(rk))/delta
+            j=2
+            while abs(div) == 0: #En caso de que div siga siendo 0 agrandamos el intervalo
+                div = (func(rk+(j*delta))-func(rk))/(j*delta)
+                j+=1
+        else:
+            div = dfunc(rk)
+        
+        rkm1 = rk - (func(rk)/div)
         
     return rkm1
 
-
-
+print(solver(1e-9,0.2,10))
 def graph(): 
     # Ploteo de r(L) L ∈ [1pH, 100uH] con l=0.2 m y N= 10,100,1000
     l= 0.2
@@ -74,3 +76,4 @@ def graph():
 
     plt.show()
     return
+
