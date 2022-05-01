@@ -5,6 +5,7 @@ from matplotlib import pyplot as plt
 #CONSTANTES GLOBALES
 mu = 4*np.pi*10**(-7) 
 tol = 1e-10 #tolerancia
+delta = 1e-2
 
 def solver(L,l,n):
     func = lambda r: (((r**2)*(n**2)*mu*np.pi/(l**2))*((((r**2)+(l**2))**0.5)-r))-L
@@ -14,14 +15,23 @@ def solver(L,l,n):
     # Lo que buscamos: x_(k+1) = x_k - f(x_k)/df(x_k)
                   #definimos r inicial
     rk = 16*(10*3) * L/(n**2) 
-    rkm1 = rk - (func(rk)/dfunc(rk))
+
+    if abs(dfunc(rk)) < tol:                #Si la derivada es "0", usamos el metodo de la secnate
+        div = (func(rk+delta)-func(rk))/delta
+        j=2
+        while abs(div) < tol:           #En caso de que div siga siendo 0 agrandamos el intrervalo
+             div = (func(rk+(j*delta))-func(rk))/(j*delta)
+             j+=1
+
+    else:
+        div = dfunc(rk)
+    rkm1 = rk - (func(rk)/div)
     while(abs(rkm1 - rk) > tol):
         rk = rkm1
         rkm1 = rk - (func(rk)/dfunc(rk))
     return rkm1
 
 
-print(solver(0,0.2,100))  #BORRAR
 
 def graph():
     #ploteo de valores
@@ -53,5 +63,3 @@ def graph():
 
     plt.show()
     return
-
-#graph()
