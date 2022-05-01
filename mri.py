@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sc
+from matplotlib import pyplot as plt
 
 #CONSTANTES GLOBALES
 mu = 4*np.pi*10**(-7) 
@@ -20,4 +21,37 @@ def solver(L,l,n):
     return rkm1
 
 
-print(solver(1e-9,0.2,10))  #BORRAR
+print(solver(0,0.2,100))  #BORRAR
+
+def graph():
+    #ploteo de valores
+    l= 0.2
+    delta_L = 1*(10**-6)
+    Ls = np.arange(10**(-9),100*10**(-6), delta_L)
+    Ln=len(Ls)
+    rs = np.empty((Ln,3))
+    for N in [10,100,1000]:         
+        for i in range(Ln):
+            rs[i,int(np.log10(N)-1)]=solver(Ls[i],l,N)
+
+
+    radio = plt.figure("Radio")
+    ax = radio.add_subplot(3,1,1)
+    plt.xlabel("L[H]")
+    plt.ylabel("r(L)[m] - N=10")
+    plt.plot(Ls,rs[:,0],color = "#40eb34")
+
+    radio.add_subplot(3,1,2)
+    plt.xlabel("L[H]")
+    plt.ylabel("r(L)[m] - N=100")
+    plt.plot(Ls,rs[:,1],color = "#f0fc03")
+
+    radio.add_subplot(3,1,3)
+    plt.xlabel("L[H]")
+    plt.ylabel("r(L)[m] - N=1000")
+    plt.plot(Ls,rs[:,2],color = "#f803fc")
+
+    plt.show()
+    return
+
+#graph()
