@@ -4,7 +4,7 @@ from matplotlib import pyplot as plt
 #CONSTANTES GLOBALES
 mu = 4*np.pi*10**(-7) 
 tol = 1e-6 #tolerancia
-delta = 1e-2                #Paso del metodo de la secante
+delta = 1e-2                #Paso del metodo de la secante.
 
 def solver(L,l,n):
     # DEFINICIÓN DE FUNCIONES LAMBDA (f(x) Y f'(x))
