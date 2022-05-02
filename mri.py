@@ -20,7 +20,7 @@ def solver(L,l,n):
     if abs(dfunc(rk)) == 0: # Si la derivada es "0", usamos el metodo de la secante
         div = (func(rk+delta)-func(rk))/delta
         j=2
-        while abs(div) == 0: #En caso de que div siga siendo "0" agrandamos el intervalo
+        while div == 0: #En caso de que div siga siendo "0" agrandamos el intervalo
             div = (func(rk+(j*delta))-func(rk))/(j*delta)
             j+=1
     else:
@@ -34,7 +34,7 @@ def solver(L,l,n):
         if abs(dfunc(rk)) == 0: # Si la derivada es "0", usamos el metodo de la secante
             div = (func(rk+delta)-func(rk))/delta
             j=2
-            while abs(div) == 0: #En caso de que div siga siendo 0 agrandamos el intervalo
+            while div == 0: #En caso de que div siga siendo 0 agrandamos el intervalo
                 div = (func(rk+(j*delta))-func(rk))/(j*delta)
                 j+=1
         else:
