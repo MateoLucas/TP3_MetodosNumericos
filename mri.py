@@ -44,7 +44,7 @@ def solver(L,l,n):
         
     return rkm1
 
-print(solver(1e-9,0.2,10))
+
 def graph(): 
     # Ploteo de r(L) L ∈ [1pH, 100uH] con l=0.2 m y N= 10,100,1000
     l= 0.2
